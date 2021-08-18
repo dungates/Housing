@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans');
+
+nav.navbar.navbar-default.navbar-static-top {
+    background-color: #31ce99 !important;
+}
+
+.navbar-default:hover {
+    background-color: #C9F5D9 !important;
+    color: #8FDDDF;
+}
+
+
+h1, h2, h3 {
+  margin-top: 0.5rem;
+}
+
+.tabbable > .nav > li > a {
+  color: #32a852;
+}
+
+#show_html {
+  background-color: #2A9FD6;
+  border-color: #2A9FD6;
+}

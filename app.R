@@ -8,13 +8,15 @@ library(ggpmisc)
 library(gt)
 library(leaflet)
 library(scales)
+library(stringr)
 library(thematic)
 library(shiny)
 
-Sys.setenv(http_proxy = "AIzaSyCkia4ftgZ_v_9IdowbWpgedgoq9vsKyM8")
+# Sys.setenv(http_proxy = "AIzaSyCkia4ftgZ_v_9IdowbWpgedgoq9vsKyM8")
+ggmap::register_google(key = "AIzaSyCkia4ftgZ_v_9IdowbWpgedgoq9vsKyM8")
 
-housing_df <- readr::read_rds("Data/housing_full.rds")
-map_df <- readr::read_rds("Data/housing_full_map.rds")
+housing_df <- readr::read_rds("data/housing_full.rds")
+map_df <- readr::read_rds("data/housing_full_map.rds")
 
 duncan_theme <- bs_theme(
   bg = "#FFFFFF",
@@ -202,7 +204,7 @@ server <- function(input, output) {
       gt::text_transform(
         locations = cells_body(columns = type),
         fn = function(x) {
-          str_remove_all(x, " for rent")
+          stringr::str_remove_all(x, " for rent")
         }
       ) %>%
       gt::opt_table_font(
@@ -284,7 +286,7 @@ server <- function(input, output) {
   
   
   output$about_text <- renderUI({
-    url <- tags$a('here', href = 'duncangates.me')
+    url <- tags$a('here', href = 'https://duncangates.me/')
     fluidRow(
       column(12,
              div(style="display:inline-block;vertical-align:top;text-align:center;line-height:1.7;",

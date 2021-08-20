@@ -286,7 +286,7 @@ server <- function(input, output) {
   
   
   output$about_text <- renderUI({
-    url <- tags$a('here', href = 'https://duncangates.me/')
+    url <- tags$a('here', href = 'https://duncangates.me/OngoingProjects/HousingScrape.html')
     fluidRow(
       column(12,
              div(style="display:inline-block;vertical-align:top;text-align:center;line-height:1.7;",

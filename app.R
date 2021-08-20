@@ -71,9 +71,29 @@ ui <- navbarPage(
     title = "Analysis", icon = shiny::icon("chart-area"),
     tabsetPanel(
       tabPanel("Linear Regression",
-               plotOutput("price_plot", height = "900px")),
+               plotOutput("price_plot", height = "900px"),
+               absolutePanel(
+                 id = "controls2", class = "panel panel-default", fixed = TRUE,
+                 draggable = TRUE, top = 150, left = "auto", right = 20, bottom = "auto",
+                 width = 330, height = "auto",
+                 h2("Data explorer"),
+                 selectInput("beds2", "Beds", c("1+" = 1, "2+" = 2, "3+" = 3, "4+" = 4, "5+" = 5)),
+                 sliderInput("price2", "Price", 
+                             min = min(housing_df$price, na.rm = T), max = max(housing_df$price, na.rm = T),
+                             value = c(min(housing_df$price, na.rm = T), max = max(housing_df$price, na.rm = T)),
+                             pre = "$"))),
       tabPanel("Mapping",
-               plotOutput("loc_plot", height = "900px"))
+               plotOutput("loc_plot", height = "900px"),
+               absolutePanel(
+                 id = "controls3", class = "panel panel-default", fixed = TRUE,
+                 draggable = TRUE, top = 150, left = "auto", right = 20, bottom = "auto",
+                 width = 330, height = "auto",
+                 h2("Data explorer"),
+                 selectInput("beds3", "Beds", c("1+" = 1, "2+" = 2, "3+" = 3, "4+" = 4, "5+" = 5)),
+                 sliderInput("price3", "Price", 
+                             min = min(housing_df$price, na.rm = T), max = max(housing_df$price, na.rm = T),
+                             value = c(min(housing_df$price, na.rm = T), max = max(housing_df$price, na.rm = T)),
+                             pre = "$")))
     )
   ),
   tabPanel(
@@ -261,6 +281,8 @@ server <- function(input, output) {
   
   output$price_plot <- renderPlot({
     housing_df %>%
+      dplyr::filter(between(price, input$price2[1], input$price2[2])) %>%
+      dplyr::filter(beds >= input$beds2) %>%
       ggplot(aes(price, house_area, color = factor(beds, levels = c(1, 2, 3, 4, 5)))) +
       geom_point() +
       geom_smooth(method = "lm", se = F) +
@@ -276,7 +298,8 @@ server <- function(input, output) {
   output$loc_plot <- renderPlot({
     
     ggmap(get_map(location = c(-122.6970879, 45.5000969), zoom = 12)) +
-      geom_point(data = map_df, aes(x = longitude, y = latitude, size = price), 
+      geom_point(data = map_df %>% dplyr::filter(between(price, input$price3[1], input$price3[2])) %>%
+                   dplyr::filter(beds >= input$beds3), aes(x = longitude, y = latitude, size = price), 
                  color = "#8466B9", alpha = 0.7) +
       scale_size_continuous(labels = scales::label_dollar(), range = c(5, 12)) +
       labs(size = "Price") +

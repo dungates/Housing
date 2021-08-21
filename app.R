@@ -288,7 +288,7 @@ server <- function(input, output) {
       geom_smooth(method = "lm", se = F) +
       stat_poly_eq(formula = y ~ x, 
                    aes(label = paste(..eq.label.., ..rr.label.., sep = "~~~")), 
-                   parse = TRUE) +
+                   parse = TRUE, na.rm = T) +
       scale_x_continuous(labels = scales::label_dollar()) +
       scale_y_continuous(labels = scales::label_comma()) +
       labs(x = "Price", y = "House Area (sqft)", title = "Price vs. Area", color = "# of Beds") +
